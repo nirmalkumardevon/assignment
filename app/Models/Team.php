@@ -10,6 +10,11 @@ class Team extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * name - String
+     * logoURI - Image URL (String)
+     * @var string[]
+     */
     protected $fillable = ['name', 'logoURI'];
 
     protected $hidden = ['created_at', 'updated_at', 'deleted_at'];

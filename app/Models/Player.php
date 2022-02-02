@@ -14,6 +14,13 @@ class Player extends Model
 
     protected $dates = ['deleted_at'];
 
+    /**
+     * firstName - string
+     * lastName - string
+     * playerImageURI - Image URL - String
+     * team_id - Integer
+     * @var string[]
+     */
     protected $fillable = [
         'firstName',
         'lastName',
