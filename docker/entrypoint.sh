@@ -1,9 +1,11 @@
 #!/bin/bash
 
-RUN composer install
+chmod -R 777 /var/www/storage
 
-RUN php artisan migrate
+composer install
 
-RUN php artisan db:seed
+php artisan migrate
+
+php artisan db:seed
 
 exec "$@"
