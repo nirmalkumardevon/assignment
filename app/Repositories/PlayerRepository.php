@@ -20,7 +20,12 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
 
     public function get($id)
     {
-        return $this->model->with('team')->findOrFail($id);
+        return $this->model->findOrFail($id);
+    }
+
+    public function getTeamPlayers($teamId)
+    {
+        return $this->model->whereTeamId($teamId)->get();
     }
 
     public function delete($id)

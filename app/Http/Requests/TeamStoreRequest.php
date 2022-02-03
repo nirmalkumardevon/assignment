@@ -28,4 +28,17 @@ class TeamStoreRequest extends Request
             'logoURI' => ['required', 'image'],
         ];
     }
+
+    /**
+     * Get the custom validation messages.
+     *
+     * @return string[]
+     */
+    public function messages()
+    {
+        return [
+            'logoURI.required' => 'The logo uri field is required.',
+            'logoURI.image' => 'The logo uri must be an image'
+        ];
+    }
 }

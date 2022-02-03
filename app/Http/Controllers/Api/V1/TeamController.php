@@ -28,18 +28,18 @@ class TeamController extends Controller
         $this->teamRepository = $teamRepository;
     }
 
+
     /**
-     * @return TeamResource|\JsonResponse
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|\JsonResponse
      */
     public function index()
     {
         try {
-            $teams = $this->teamRepository->all();
+            return $this->teamRepository->all();
 
-            return new TeamResource($teams);
         } catch (\Throwable $throwable) {
             logError('Error while getting team list', 'Api\V1\TeamController@index', $throwable);
-            return simpleMessageResponse('Error while getting team list', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -53,30 +53,29 @@ class TeamController extends Controller
             $validated = $request->all();
             $validated['logoURI'] = $this->storeUploadedFile($request, 'logoURI');
 
-            $team = $this->teamRepository->create($validated);
+           return $team = $this->teamRepository->create($validated);
 
-            return new TeamResource($team);
         } catch (\Throwable $throwable) {
-            logError('Error while creating team', 'Api\V1\TeamController@store', $throwable);
-            return simpleMessageResponse('Error while creating team', INTERNAL_SERVER);
+            logError('Error while creating a team', 'Api\V1\TeamController@store', $throwable);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
+
     /**
-     * @param Team $team
-     * @return TeamShowResource|\JsonResponse
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\JsonResponse|null
      */
     public function show($id)
     {
         try {
-            $team = $this->teamRepository->get($id);
+            return $this->teamRepository->get($id);
 
-            return new TeamShowResource($team);
         } catch (ModelNotFoundException $e) {
             return simpleMessageResponse('Team not found', NOT_FOUND);
         } catch (\Throwable $throwable) {
             logError('Error while showing team', 'Api\V1\TeamController@show', $throwable);
-            return simpleMessageResponse('Server Error!', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -91,12 +90,10 @@ class TeamController extends Controller
             $validated = $request->validated();
             $validated['logoURI'] = $this->storeUploadedFile($request, 'logoURI');
 
-            $team = $this->teamRepository->update($id, $validated);
-
-            return new TeamResource($team);
+            return $this->teamRepository->update($id, $validated);
         } catch (\Throwable $throwable) {
             logError('Error while updating team', 'Api\V1\TeamController@update', $throwable);
-            return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -107,12 +104,15 @@ class TeamController extends Controller
     public function destroy(Team $team)
     {
         try {
+            $this->teamRepository->get($team->id);
             $this->teamRepository->delete($team->id);
 
-            return simpleMessageResponse('Team deleted successfully');
+            return response()->noContent();
+        } catch (ModelNotFoundException $e) {
+            return simpleMessageResponse('Team not found', NOT_FOUND);
         } catch (\Throwable $throwable) {
             logError('Error while creating team', 'Api\V1\TeamController@store', $throwable);
-            return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 }

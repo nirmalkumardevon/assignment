@@ -27,16 +27,15 @@ class PlayerController extends Controller
         $this->playerRepository = $playerRepository;
     }
 
+
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return PlayerCollection|\JsonResponse
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|\JsonResponse
      */
     public function index()
     {
         try {
-            $players = $this->playerRepository->all();
+            return $this->playerRepository->all();
 
-            return new PlayerCollection($players);
         } catch (\Throwable $throwable) {
             logError('Error while getting players', 'Api\V1\PlayerController@index', $throwable);
             return simpleMessageResponse('Server Error', INTERNAL_SERVER);
@@ -54,12 +53,10 @@ class PlayerController extends Controller
             $validated = $request->validated();
             $validated['playerImageURI'] = $this->storeUploadedFile($request, 'playerImageURI');
 
-            $player = $this->playerRepository->create($validated);
-
-            return new PlayerResource($player);
+            return $this->playerRepository->create($validated);
         } catch (\Throwable $throwable) {
             logError('Error while creating player', 'Api\V1\PlayerController@store', $throwable);
-            return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -70,13 +67,13 @@ class PlayerController extends Controller
     public function show($playerId)
     {
         try {
-            $player = $this->playerRepository->get($playerId);
-            return new PlayerResource($player);
+            return $this->playerRepository->get($playerId);
+
         } catch (ModelNotFoundException $e) {
             return simpleMessageResponse('Player not found', NOT_FOUND);
         } catch (\Throwable $throwable) {
             logError('Error while getting player details', 'Api\V1\PlayerController@show', $throwable);
-            return simpleMessageResponse('Player not found!', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -122,6 +119,22 @@ class PlayerController extends Controller
             DB::rollBack();
             logError('Error while deleting player', 'Api\V1\PlayerController@delete', $throwable);
             return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+        }
+    }
+
+    /**
+     * @param $teamId
+     * @return PlayerResource|\JsonResponse
+     */
+    public function listTeamPlayers($teamId)
+    {
+        try {
+            return $this->playerRepository->getTeamPlayers($teamId);
+        } catch (ModelNotFoundException $e) {
+            return simpleMessageResponse('Player not found', NOT_FOUND);
+        } catch (\Throwable $throwable) {
+            logError('Error while getting player details', 'Api\V1\PlayerController@show', $throwable);
+            return simpleMessageResponse('Player not found!', INTERNAL_SERVER);
         }
     }
 }

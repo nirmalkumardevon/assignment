@@ -29,7 +29,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function get($id)
     {
-        return $this->model->with('players')->findOrFail($id);
+        return $this->model->findOrFail($id);
     }
 
     /**

@@ -23,6 +23,7 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('teams/', [TeamController::class, 'index'])->name('api.v1.teams.index');
     Route::get('teams/{team}', [TeamController::class, 'show'])->name('api.v1.teams.show');
+    Route::get('teams/{team}/players', [PlayerController::class, 'listTeamPlayers'])->name('api.v1.teams.players.show');
     Route::get('players/{player}', [PlayerController::class, 'show'])->name('api.v1.players.show');
 
     // Authenticated routes
@@ -31,7 +32,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['prefix' => 'teams', 'middleware' => 'check.admin.user'], function () {
             Route::post('/', [TeamController::class, 'store'])->name('api.v1.teams.store');
-            Route::put('/{team}', [TeamController::class, 'update'])->name('api.v1.teams.update');
+            Route::patch('/{team}', [TeamController::class, 'update'])->name('api.v1.teams.update');
             Route::delete('/{team}', [TeamController::class, 'destroy'])->name('api.v1.teams.destroy');
         });
 

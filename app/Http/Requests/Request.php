@@ -20,7 +20,7 @@ class Request extends FormRequest
     public function failedValidation(Validator $validator)
     {
         if ($this->expectsJson()) {
-            throw new HttpResponseException(response()->json(['message' => 'validation failed', 'error' => $validator->getMessageBag()], 400));
+            throw new HttpResponseException(response()->json(['message' => 'Invalid data in request body', 'error' => $validator->getMessageBag()], 400));
         }
 
         throw (new ValidationException($validator))

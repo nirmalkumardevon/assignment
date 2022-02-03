@@ -12,3 +12,5 @@ define('CONFLICT', 409);
 define('UNPROCESSABLE_ENTITY', 422);
 define('INTERNAL_SERVER', 500);
 define('RESET_CONTENT', 205);
+
+define('INTERNAL_SERVER_ERROR', 'Internal Server Error');

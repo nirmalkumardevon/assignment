@@ -30,4 +30,17 @@ class PlayerStoreRequest extends Request
             'team_id' => ['required', 'exists:teams,id'],
         ];
     }
+
+    /**
+     * Get custom validation messages.
+     *
+     * @return string[]
+     */
+    public function messages()
+    {
+        return [
+            'playerImageURI.required' => 'The player image uri field is required.',
+            'playerImageURI.image' => 'The player image uri must be an image.',
+        ];
+    }
 }
