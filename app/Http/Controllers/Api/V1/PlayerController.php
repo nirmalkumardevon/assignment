@@ -96,7 +96,7 @@ class PlayerController extends Controller
         } catch (\Throwable $throwable) {
             DB::rollBack();
             logError('Error while updating player details', 'Api\V1\PlayerController@update', $throwable);
-            return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -118,7 +118,7 @@ class PlayerController extends Controller
         } catch (\Throwable $throwable) {
             DB::rollBack();
             logError('Error while deleting player', 'Api\V1\PlayerController@delete', $throwable);
-            return simpleMessageResponse('Server Error', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
@@ -134,7 +134,7 @@ class PlayerController extends Controller
             return simpleMessageResponse('Player not found', NOT_FOUND);
         } catch (\Throwable $throwable) {
             logError('Error while getting player details', 'Api\V1\PlayerController@show', $throwable);
-            return simpleMessageResponse('Player not found!', INTERNAL_SERVER);
+            return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 }
