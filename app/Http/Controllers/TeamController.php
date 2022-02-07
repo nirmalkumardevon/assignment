@@ -106,7 +106,6 @@ class TeamController extends Controller
      */
     public function destroy(Request $request, Team $team)
     {
-        info($team);
         $this->teamRepository->delete($team->id);
 
         return redirect()
