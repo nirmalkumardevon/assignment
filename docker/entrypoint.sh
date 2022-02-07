@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chmod -R 777 /var/www/storage/logs
+chmod -R 777 /var/www/storage
 
 composer install
 
