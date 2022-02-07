@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\TeamStoreRequest;
+use App\Http\Requests\TeamUpdateRequest;
 use App\Models\Team;
 use App\Repositories\TeamRepository;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
-use App\Http\Requests\TeamStoreRequest;
-use App\Http\Requests\TeamUpdateRequest;
+use function __;
+use function redirect;
+use function view;
 
 class TeamController extends Controller
 {

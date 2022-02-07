@@ -2,6 +2,8 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Http\JsonResponse;
+
 interface TeamRepositoryInterface
 {
     public function all();

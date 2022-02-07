@@ -1,14 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Web;
 
-use App\Models\Team;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PlayerStoreRequest;
+use App\Http\Requests\PlayerUpdateRequest;
 use App\Models\Player;
+use App\Models\Team;
 use App\Repositories\PlayerRepository;
 use App\Traits\UploadFileTrait;
 use Illuminate\Http\Request;
-use App\Http\Requests\PlayerStoreRequest;
-use App\Http\Requests\PlayerUpdateRequest;
+use function __;
+use function redirect;
+use function view;
 
 class PlayerController extends Controller
 {
@@ -57,7 +61,7 @@ class PlayerController extends Controller
         $validated = $request->validated();
         $validated['playerImageURI'] = $this->storeUploadedFile($request, 'playerImageURI');
 
-        $player = $this->playerRepositorycreate($validated);
+        $player = $this->playerRepository->create($validated);
 
         return redirect()
             ->route('players.edit', $player)

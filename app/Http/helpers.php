@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
  * @param int $status
  * @return JsonResponse
  */
-function simpleMessageResponse($message, $status = SUCCESS)
+function simpleMessageResponse($message, $status = SUCCESS) : \Illuminate\Http\JsonResponse
 {
     return response()->json([
         'code' => $status,

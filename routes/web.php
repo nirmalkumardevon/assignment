@@ -1,11 +1,11 @@
 <?php
 
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\Web\HomeController;
+use App\Http\Controllers\Web\PermissionController;
+use App\Http\Controllers\Web\PlayerController;
+use App\Http\Controllers\Web\RoleController;
+use App\Http\Controllers\Web\TeamController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TeamController;
-use App\Http\Controllers\PlayerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +23,7 @@ Auth::routes(['register' => false]);
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::prefix('/')
+Route::prefix('web')
     ->middleware('auth')
     ->group(function () {
         Route::resource('roles', RoleController::class);

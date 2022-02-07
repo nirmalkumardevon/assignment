@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Player;
-use App\Repositories\PlayerRepository;
-use App\Repositories\TeamRepository;
-use App\Traits\UploadFileTrait;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PlayerResource;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\PlayerCollection;
 use App\Http\Requests\PlayerStoreRequest;
 use App\Http\Requests\PlayerUpdateRequest;
+use App\Models\Player;
+use App\Repositories\PlayerRepository;
+use App\Traits\UploadFileTrait;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class PlayerController extends Controller
 {
@@ -29,7 +27,7 @@ class PlayerController extends Controller
 
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|\JsonResponse
+     * @return Collection
      */
     public function index()
     {
@@ -44,8 +42,8 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param \App\Http\Requests\PlayerStoreRequest $request
-     * @return PlayerResource|\JsonResponse
+     * @param PlayerStoreRequest $request
+     * @return JsonResponse
      */
     public function store(PlayerStoreRequest $request)
     {
@@ -60,9 +58,10 @@ class PlayerController extends Controller
         }
     }
 
+
     /**
      * @param $playerId
-     * @return PlayerResource|\JsonResponse
+     * @return JsonResponse
      */
     public function show($playerId)
     {
@@ -77,54 +76,47 @@ class PlayerController extends Controller
         }
     }
 
+
     /**
-     * @param \App\Http\Requests\PlayerUpdateRequest $request
-     * @param \App\Models\Player $player
-     * @return PlayerResource|\JsonResponse
+     * @param PlayerUpdateRequest $request
+     * @param Player $player
+     * @return JsonResponse
      */
     public function update(PlayerUpdateRequest $request, Player $player)
     {
-        DB::beginTransaction();
         try {
             $validated = $request->validated();
             $validated['playerImageURI'] = $this->storeUploadedFile($request, 'playerImageURI');
 
-            $player = $this->playerRepository->update($validated);
+            return $this->playerRepository->update($validated);
 
-            DB::commit();
-            return new PlayerResource($player);
         } catch (\Throwable $throwable) {
-            DB::rollBack();
             logError('Error while updating player details', 'Api\V1\PlayerController@update', $throwable);
             return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Player $player
-     * @return \JsonResponse
+     * @param Request $request
+     * @param Player $player
      */
     public function destroy(Request $request, Player $player)
     {
         try {
-            if ($player->playerImageURI) {
-                Storage::delete($player->playerImageURI);
-            }
-
+            $this->playerRepository->get($player->id);
             $this->playerRepository->delete($player->id);
 
-            return simpleMessageResponse('Player deleted successfully');
+            return response()->noContent();
         } catch (\Throwable $throwable) {
-            DB::rollBack();
             logError('Error while deleting player', 'Api\V1\PlayerController@delete', $throwable);
             return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
         }
     }
 
+
     /**
      * @param $teamId
-     * @return PlayerResource|\JsonResponse
+     * @return JsonResponse
      */
     public function listTeamPlayers($teamId)
     {

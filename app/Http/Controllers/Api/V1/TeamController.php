@@ -2,20 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Requests\Request;
-use App\Http\Resources\TeamShowResource;
-use App\Models\Team;
-use App\Http\Resources\TeamResource;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamStoreRequest;
+use App\Http\Requests\TeamUpdateRequest;
+use App\Models\Team;
 use App\Repositories\TeamRepository;
 use App\Traits\UploadFileTrait;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\TeamUpdateRequest;
 
 class TeamController extends Controller
 {
@@ -28,9 +23,8 @@ class TeamController extends Controller
         $this->teamRepository = $teamRepository;
     }
 
-
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]|\JsonResponse
+     * @return Collection
      */
     public function index()
     {
@@ -44,8 +38,8 @@ class TeamController extends Controller
     }
 
     /**
-     * @param \App\Http\Requests\TeamStoreRequest $request
-     * @return TeamResource|\JsonResponse
+     * @param TeamStoreRequest $request
+     * @return JsonResponse
      */
     public function store(TeamStoreRequest $request)
     {
@@ -64,7 +58,7 @@ class TeamController extends Controller
 
     /**
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|\JsonResponse|null
+     * @return JsonResponse
      */
     public function show($id)
     {
@@ -79,10 +73,11 @@ class TeamController extends Controller
         }
     }
 
+
     /**
-     * @param Request $request
+     * @param TeamUpdateRequest $request
      * @param $id
-     * @return TeamResource|\JsonResponse
+     * @return JsonResponse
      */
     public function update(TeamUpdateRequest $request, $id)
     {
@@ -97,9 +92,9 @@ class TeamController extends Controller
         }
     }
 
+
     /**
-     * @param \App\Models\Team $team
-     * @return \JsonResponse
+     * @param Team $team
      */
     public function destroy(Team $team)
     {
