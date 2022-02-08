@@ -89,7 +89,7 @@ class TeamController extends Controller
         } catch (\Throwable $throwable) {
             logError('Error while updating team', 'Api\V1\TeamController@update', $throwable);
             return simpleMessageResponse(INTERNAL_SERVER_ERROR, INTERNAL_SERVER);
-        }
+            }
     }
 
 

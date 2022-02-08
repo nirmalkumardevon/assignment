@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Interfaces\TeamRepositoryInterface;
 use App\Models\Team;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 {
@@ -16,7 +18,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]
+     * @return Collection
      */
     public function all()
     {
@@ -25,7 +27,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 
     /**
      * @param $id
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     * @return Model
      */
     public function get($id)
     {
