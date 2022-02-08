@@ -41,6 +41,7 @@ class PlayerStoreRequest extends Request
         return [
             'playerImageURI.required' => 'The player image uri field is required.',
             'playerImageURI.image' => 'The player image uri must be an image.',
+            'team_id.required' => 'The Team field is required',
         ];
     }
 }
