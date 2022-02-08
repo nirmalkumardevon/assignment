@@ -2,6 +2,8 @@
 
 chmod -R 777 /var/www/storage
 
+chmod -R 777 /var/www/storage/logs
+
 composer install
 
 php artisan migrate
