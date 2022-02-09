@@ -33,7 +33,7 @@ class PlayerController extends Controller
         try {
             return $this->playerRepository->all();
         } catch (\Throwable $throwable) {
-            logError('Error while getting players', 'Api\V1\PlayerController@index', $throwable);
+            logError('Error while getting players list', 'Api\V1\PlayerController@getPlayersList', $throwable);
             return simpleMessageResponse(MESSAGE_INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -104,7 +104,7 @@ class PlayerController extends Controller
         } catch (ModelNotFoundException $e) {
             return simpleMessageResponse('Player not found', Response::HTTP_NOT_FOUND);
         } catch (\Throwable $throwable) {
-            logError('Error while deleting player', 'Api\V1\PlayerController@destroy', $throwable);
+            logError('Error while deleting player', 'Api\V1\PlayerController@deletePlayer', $throwable);
             return simpleMessageResponse(MESSAGE_INTERNAL_SERVER_ERROR, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
