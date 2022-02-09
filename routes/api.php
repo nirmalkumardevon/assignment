@@ -21,10 +21,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('login', [LoginController::class, 'login'])->name('api.v1.login');
     });
 
-    Route::get('teams/', [TeamController::class, 'index'])->name('api.v1.teams.index');
-    Route::get('teams/{team}', [TeamController::class, 'show'])->name('api.v1.teams.show');
+    Route::get('teams/', [TeamController::class, 'getTeamsList'])->name('api.v1.teams.index');
+    Route::get('teams/{team}', [TeamController::class, 'getTeamDetails'])->name('api.v1.teams.show');
     Route::get('teams/{team}/players', [PlayerController::class, 'listTeamPlayers'])->name('api.v1.teams.players.show');
-    Route::get('players/{player}', [PlayerController::class, 'show'])->name('api.v1.players.show');
+    Route::get('players/{player}', [PlayerController::class, 'getPlayerDetails'])->name('api.v1.players.show');
 
     // Authenticated routes
     Route::group(['middleware' => 'api.auth'], function () {
@@ -38,8 +38,8 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::group(['prefix' => 'players', 'middleware' => 'check.admin.user'], function () {
             Route::post('/', [PlayerController::class, 'store'])->name('api.v1.players.store');
-            Route::patch('/{player}', [PlayerController::class, 'update'])->name('api.v1.players.update');
-            Route::delete('/{player}', [PlayerController::class, 'destroy'])->name('api.v1.players.destroy');
+            Route::patch('/{player}', [PlayerController::class, 'updatePlayer'])->name('api.v1.players.update');
+            Route::delete('/{player}', [PlayerController::class, 'deletePlayer'])->name('api.v1.players.destroy');
         });
     });
 });

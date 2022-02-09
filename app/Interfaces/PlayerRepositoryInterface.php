@@ -3,41 +3,43 @@
 namespace App\Interfaces;
 
 
+use Illuminate\Http\JsonResponse;
+
 interface PlayerRepositoryInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
-    public function all();
+    public function all(): array;
 
     /**
-     * @param $teamId
-     * @return mixed
+     * @param int $playerId
+     * @return JsonResponse
      */
-    public function get($teamId);
+    public function get(int $playerId);
 
     /**
-     * @param $teamId
-     * @return mixed
+     * @param int $teamId
+     * @return JsonResponse
      */
-    public function getTeamPlayers($teamId);
+    public function getTeamPlayers(int $teamId);
 
     /**
-     * @param $teamId
-     * @return mixed
+     * @param int $playerId
+     * @return bool
      */
-    public function delete($teamId);
+    public function delete(int $playerId);
 
     /**
-     * @param array $teamDetails
-     * @return mixed
+     * @param array $playerDetails
+     * @return JsonResponse
      */
-    public function create(array $teamDetails);
+    public function create(array $playerDetails);
 
     /**
-     * @param $orderId
-     * @param array $teamDetails
-     * @return mixed
+     * @param $playerId
+     * @param array $playerDetails
+     * @return JsonResponse
      */
-    public function update($orderId, array $teamDetails);
+    public function update($playerId, array $playerDetails);
 }

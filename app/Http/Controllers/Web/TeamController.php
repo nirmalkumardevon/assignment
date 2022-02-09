@@ -8,6 +8,8 @@ use App\Http\Requests\TeamUpdateRequest;
 use App\Models\Team;
 use App\Repositories\TeamRepository;
 use App\Traits\UploadFileTrait;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use function __;
 use function redirect;
@@ -24,11 +26,11 @@ class TeamController extends Controller
         $this->teamRepository = $teamRepository;
     }
 
+
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index()
     {
         $teams = Team::latest()
             ->paginate(10)
@@ -38,21 +40,20 @@ class TeamController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function create(Request $request)
+    public function create()
     {
         return view('app.teams.create');
     }
 
+
     /**
-     * @param \App\Http\Requests\TeamStoreRequest $request
-     * @return \Illuminate\Http\Response
+     * @param TeamStoreRequest $request
+     * @return mixed
      */
     public function store(TeamStoreRequest $request)
     {
-
         $validated = $request->validated();
         $validated['logoURI'] = $this->storeUploadedFile($request, 'logoURI');
 
@@ -64,39 +65,34 @@ class TeamController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Team $team
-     * @return \Illuminate\Http\Response
+     * @param Team $team
+     * @return Application|View
      */
-    public function show(Request $request, Team $team)
+    public function show(Team $team)
     {
-
         return view('app.teams.show', compact('team'));
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Team $team
-     * @return \Illuminate\Http\Response
+     * @param Team $team
+     * @return Application|View
      */
-    public function edit(Request $request, Team $team)
+    public function edit(Team $team)
     {
-
         return view('app.teams.edit', compact('team'));
     }
 
     /**
-     * @param \App\Http\Requests\TeamUpdateRequest $request
-     * @param \App\Models\Team $team
-     * @return \Illuminate\Http\Response
+     * @param TeamUpdateRequest $request
+     * @param Team $team
+     * @return mixed
      */
     public function update(TeamUpdateRequest $request, Team $team)
     {
-
         $validated = $request->validated();
         $validated['logoURI'] = $this->storeUploadedFile($request, 'logoURI');
 
-        $team = $this->teamRepository->update($validated);
+        $team = $this->teamRepository->update($team->id, $validated);
 
         return redirect()
             ->route('teams.index', $team)
@@ -104,11 +100,10 @@ class TeamController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Team $team
-     * @return \Illuminate\Http\Response
+     * @param Team $team
+     * @return mixed
      */
-    public function destroy(Request $request, Team $team)
+    public function destroy(Team $team)
     {
         $this->teamRepository->delete($team->id);
 

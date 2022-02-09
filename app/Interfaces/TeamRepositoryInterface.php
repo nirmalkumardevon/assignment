@@ -2,35 +2,37 @@
 
 namespace App\Interfaces;
 
+use Illuminate\Http\JsonResponse;
+
 interface TeamRepositoryInterface
 {
     /**
-     * @return mixed
+     * @return array
      */
     public function all();
 
     /**
-     * @param $teamId
-     * @return mixed
+     * @param int $teamId
+     * @return JsonResponse
      */
-    public function get($teamId);
+    public function get(int $teamId);
 
     /**
-     * @param $teamId
-     * @return mixed
+     * @param int $teamId
+     * @return JsonResponse
      */
-    public function delete($teamId);
+    public function delete(int $teamId);
 
     /**
      * @param array $teamDetails
-     * @return mixed
+     * @return JsonResponse
      */
     public function create(array $teamDetails);
 
     /**
-     * @param $orderId
+     * @param int $teamId
      * @param array $teamDetails
-     * @return mixed
+     * @return JsonResponse
      */
-    public function update($orderId, array $teamDetails);
+    public function update(int $teamId, array $teamDetails);
 }

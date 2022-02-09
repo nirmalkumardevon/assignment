@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -7,9 +8,10 @@ use Illuminate\Support\Facades\Route;
  *
  * @param $message
  * @param int $status
- * @return JsonResponse
+ * @retun JsonResponse
+ *
  */
-function simpleMessageResponse($message, $status = SUCCESS) : \Illuminate\Http\JsonResponse
+function simpleMessageResponse($message, $status = SUCCESS): JsonResponse
 {
     return response()->json([
         'code' => $status,

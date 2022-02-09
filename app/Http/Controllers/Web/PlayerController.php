@@ -9,7 +9,10 @@ use App\Models\Player;
 use App\Models\Team;
 use App\Repositories\PlayerRepository;
 use App\Traits\UploadFileTrait;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use function __;
 use function redirect;
 use function view;
@@ -26,10 +29,9 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return View
      */
-    public function index(Request $request)
+    public function index()
     {
 
         $players = Player::latest()
@@ -40,20 +42,18 @@ class PlayerController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Application|View
      */
-    public function create(Request $request)
+    public function create()
     {
-
         $teams = Team::pluck('name', 'id');
-
         return view('app.players.create', compact('teams'));
     }
 
+
     /**
-     * @param \App\Http\Requests\PlayerStoreRequest $request
-     * @return \Illuminate\Http\Response
+     * @param PlayerStoreRequest $request
+     * @return mixed
      */
     public function store(PlayerStoreRequest $request)
     {
@@ -68,57 +68,54 @@ class PlayerController extends Controller
             ->withSuccess(__('crud.common.created'));
     }
 
-    /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Player $player
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request, Player $player)
-    {
 
+    /**
+     * @param Player $player
+     * @return Application|View
+     */
+    public function show(Player $player)
+    {
         return view('app.players.show', compact('player'));
     }
 
+
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Player $player
-     * @return \Illuminate\Http\Response
+     * @param Player $player
+     * @return Application|View
      */
-    public function edit(Request $request, Player $player)
+    public function edit(Player $player)
     {
-
         $teams = Team::pluck('name', 'id');
-
         return view('app.players.edit', compact('player', 'teams'));
     }
 
+
     /**
-     * @param \App\Http\Requests\PlayerUpdateRequest $request
-     * @param \App\Models\Player $player
-     * @return \Illuminate\Http\Response
+     * @param PlayerUpdateRequest $request
+     * @param Player $player
+     * @return mixed
      */
     public function update(PlayerUpdateRequest $request, Player $player)
     {
-
         $validated = $request->validated();
         $validated['playerImageURI'] = $this->storeUploadedFile($request, 'playerImageURI');
 
-        $player = $this->playerRepository->update($validated);
+        $player = $this->playerRepository->update($player->id, $validated);
 
         return redirect()
             ->route('players.edit', $player)
             ->withSuccess(__('crud.common.saved'));
     }
 
+
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Player $player
-     * @return \Illuminate\Http\Response
+     * @param $playerId
+     * @return mixed
      */
-    public function destroy(Request $request, Player $player)
+    public function destroy($playerId)
     {
 
-        $this->playerRepository->delete($player);
+        $this->playerRepository->delete($playerId);
 
         return redirect()
             ->route('players.index')

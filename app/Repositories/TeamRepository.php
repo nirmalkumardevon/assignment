@@ -6,6 +6,8 @@ use App\Interfaces\TeamRepositoryInterface;
 use App\Models\Team;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\JsonResponse;
+use PhpParser\Node\Expr\Array_;
 
 class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 {
@@ -19,17 +21,18 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
         $this->team = $team;
     }
 
+
     /**
-     * @return Collection
+     * @return array
      */
-    public function all()
+    public function all(): array
     {
-        return $this->team->all();
+        return $this->team->all()->toArray();
     }
 
     /**
      * @param $id
-     * @return Model
+     * @return JsonResponse
      */
     public function get($id)
     {
@@ -38,7 +41,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 
     /**
      * @param $id
-     * @return int
+     * @return JsonResponse
      */
     public function delete($id)
     {
@@ -47,7 +50,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 
     /**
      * @param array $validated
-     * @return mixed
+     * @return JsonResponse
      */
     public function create(array $validated)
     {
@@ -57,7 +60,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
     /**
      * @param $id
      * @param array $validated
-     * @return mixed
+     * @return JsonResponse
      */
     public function update($id, array $validated)
     {

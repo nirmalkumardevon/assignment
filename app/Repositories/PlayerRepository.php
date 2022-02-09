@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\PlayerRepositoryInterface;
 use App\Models\Player;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\JsonResponse;
 
 class PlayerRepository extends BaseRepository implements PlayerRepositoryInterface
 {
@@ -16,16 +17,16 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
     }
 
     /**
-     * @return Collection
+     * @return array
      */
-    public function all()
+    public function all(): array
     {
-        return $this->player->all();
+        return $this->player->all()->toArray();
     }
 
     /**
      * @param $id
-     * @return mixed
+     * @return JsonResponse
      */
     public function get($id)
     {
@@ -34,7 +35,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
 
     /**
      * @param $teamId
-     * @return mixed
+     * @return JsonResponse
      */
     public function getTeamPlayers($teamId)
     {
@@ -43,7 +44,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
 
     /**
      * @param $id
-     * @return bool|int|null
+     * @return bool
      */
     public function delete($id)
     {
@@ -52,7 +53,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
 
     /**
      * @param array $details
-     * @return mixed
+     * @return JsonResponse
      */
     public function create(array $details)
     {
@@ -60,12 +61,12 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
     }
 
     /**
-     * @param $teamId
+     * @param $playerId
      * @param array $details
-     * @return mixed
+     * @return JsonResponse
      */
-    public function update($teamId, array $details)
+    public function update($playerId, array $details)
     {
-        return $this->player->whereId($teamId)->update($details);
+        return $this->player->whereId($playerId)->update($details);
     }
 }
