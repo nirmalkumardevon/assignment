@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\JWT;
 
@@ -38,10 +39,10 @@ class CheckAdminUser
         if (($user->isSuperAdmin())) {
             return response()->json([
                 'error' => [
-                    'code' => FORBIDDEN,
+                    'code' => Response::HTTP_FORBIDDEN,
                     'message' => 'User Forbidden',
                 ],
-            ], FORBIDDEN);
+            ], Response::HTTP_FORBIDDEN);
         }
 
         return $next($request);
