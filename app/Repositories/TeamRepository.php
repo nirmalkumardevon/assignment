@@ -9,12 +9,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class TeamRepository extends BaseRepository implements TeamRepositoryInterface
 {
+    private $team;
+
     /**
-     * @param Team $model
+     * @param Team $team
      */
-    public function __construct(Team $model)
+    public function __construct(Team $team)
     {
-        parent::__construct($model);
+        $this->team = $team;
     }
 
     /**
@@ -22,7 +24,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->team->all();
     }
 
     /**
@@ -31,7 +33,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function get($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->team->findOrFail($id);
     }
 
     /**
@@ -40,7 +42,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function delete($id)
     {
-        return $this->model->whereId($id)->delete();
+        return $this->team->whereId($id)->delete();
     }
 
     /**
@@ -49,7 +51,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function create(array $validated)
     {
-        return $this->model->create($validated);
+        return $this->team->create($validated);
     }
 
     /**
@@ -59,7 +61,7 @@ class TeamRepository extends BaseRepository implements TeamRepositoryInterface
      */
     public function update($id, array $validated)
     {
-        return $this->model->whereId($id)->update($validated);
+        return $this->team->whereId($id)->update($validated);
     }
 
 }

@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PlayerRepository extends BaseRepository implements PlayerRepositoryInterface
 {
+    private $player;
 
-    public function __construct(Player $model)
+    public function __construct(Player $player)
     {
-        parent::__construct($model);
+        $this->player = $player;
     }
 
     /**
@@ -19,7 +20,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function all()
     {
-        return $this->model->all();
+        return $this->player->all();
     }
 
     /**
@@ -28,7 +29,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function get($id)
     {
-        return $this->model->findOrFail($id);
+        return $this->player->findOrFail($id);
     }
 
     /**
@@ -37,7 +38,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function getTeamPlayers($teamId)
     {
-        return $this->model->whereTeamId($teamId)->get();
+        return $this->player->whereTeamId($teamId)->get();
     }
 
     /**
@@ -46,7 +47,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function delete($id)
     {
-        return $this->model->delete($id);
+        return $this->player->delete($id);
     }
 
     /**
@@ -55,7 +56,7 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function create(array $details)
     {
-        return $this->model->create($details);
+        return $this->player->create($details);
     }
 
     /**
@@ -65,6 +66,6 @@ class PlayerRepository extends BaseRepository implements PlayerRepositoryInterfa
      */
     public function update($teamId, array $details)
     {
-        return $this->model->whereId($teamId)->update($details);
+        return $this->player->whereId($teamId)->update($details);
     }
 }
